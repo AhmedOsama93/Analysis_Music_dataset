@@ -1,0 +1,54 @@
+/* Query 1 */
+SELECT Album.Title as "Album Name", Artist.Name as "Artist name",
+sum(Track.UnitPrice) 'price of Album' ,
+count(Track.TrackId) 'count of Tracks' , 
+group_concat(Track.Name ,' , ')as "Tracks Names"
+FROM Album Album 
+JOIN Track Track
+ON Album.AlbumId = Track.AlbumId 
+JOIN Artist Artist
+ON Album.ArtistId = Artist.ArtistId
+group by Track.AlbumId
+ORDER by sum(Track.UnitPrice) DESC
+limit 5 ;
+
+/* Query 2 */
+SELECT customer.FirstName as "First Name", 
+customer.LastName as "Last Name",
+count(invoice.customerId) as "Number of Invoice",
+customer.City
+from Invoice invoice
+join Customer customer
+ON invoice.CustomerId = customer.CustomerId 
+GROUP BY invoice.customerId
+ORDER by "Number of Invoice" ASC
+LIMIT 5;
+
+/* Query 3 */
+SELECT distinct Playlist.Name as "Playlist Name",
+count(PlaylistTrack.TrackId) as "Number of frequency of this Track",
+Track.Name as "The Most Shared Track Name" 
+FROM PlaylistTrack PlaylistTrack
+JOIN Track Track
+ON Track.TrackId = PlaylistTrack.TrackId
+JOIN Playlist Playlist
+ON PlaylistTrack.PlaylistId = Playlist.PlaylistId
+GROUP BY PlaylistTrack.PlaylistId
+ORDER BY "Number of frequency of this Track" DESC
+LIMIT 3
+
+/* Query 4 */
+SELECT Genre.Name as "Genre Name",
+count(Track.genreId) as "Number of frequency of Track",
+Album.Title as "Album Name",
+MediaType.Name as "MediaType Name"
+FROM Track Track 
+JOIN Genre Genre 
+ON Track.GenreId = Genre.GenreId
+JOIN MediaType MediaType
+ON MediaType.MediaTypeId = Track.MediaTypeId
+JOIN Album Album
+ON Album.AlbumId = Track.AlbumId
+GROUP by Genre.GenreId
+ORDER BY "Number of frequency of Track" DESC
+
